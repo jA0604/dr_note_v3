@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".screens.addnote.AddNewNoteFragment">
+
+    <EditText
+        android:id="@+id/et_input_name_note"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/padding_text_note"
+        android:lines="1"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="@dimen/app_large_text"
+        android:gravity="center"
+        tools:ignore="LabelFor"
+        style="@style/edit_text_add_note"
+        android:autofillHints=""/>
+
+    <EditText
+        android:id="@+id/et_input_text_note"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/app_margin"
+        android:background="@drawable/drw_round_rectangle"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="normal"
+        android:textSize="@dimen/app_large_text"
+        android:padding="@dimen/padding_text_note"
+        android:gravity="top"
+        tools:ignore="LabelFor"
+        android:autofillHints=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cb_hasdeadline"
+        app:layout_constraintTop_toBottomOf="@+id/et_input_name_note"/>
+
+    <CheckBox
+        android:id="@+id/cb_hasdeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/check_box_has_deadline"
+        android:layout_margin="@dimen/app_margin"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="normal"
+        android:textSize="@dimen/app_large_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_deadline"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="370dp"/>
+
+    <TextView
+        android:id="@+id/tv_deadline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_height_set_deadline"
+        android:layout_margin="@dimen/app_margin"
+        android:text="@string/str_tv_calendar"
+        android:textSize="@dimen/app_normal_text"
+        android:textStyle="bold"
+        android:padding="@dimen/padding_btn_incorrect"
+        android:background="@drawable/drw_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

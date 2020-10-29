@@ -60,9 +60,8 @@ public class SettingFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 showPinView(s.length());
-                if (s.length() == 4) {
-                    behaviorView();
-                }
+                behaviorView();
+
             }
         });
     }

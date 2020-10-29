@@ -23,25 +23,32 @@ public class StartFragmentViewModel extends ViewModel {
     }
 
     public void pinCodeBackspace() {
-        pinLiveData.setValue(pinLiveData.getValue().substring(0, pinLiveData.getValue().length() - 1));
+        if (pinLiveData.getValue().length() > 0 && pinLiveData.getValue().length() < 5) {
+            pinLiveData.setValue(pinLiveData.getValue().substring(0, pinLiveData.getValue().length() - 1));
+        }
     }
 
     public int actionState() {
-        if (newPin.equals("")) { //Если первый вход
-            newPin = pinLiveData.getValue();
-            return Constants.REPEAT_NEW_PIN;
-        } else if (pinLiveData.getHashPinCodeExist().equals("") &&
-                   pinLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН совпадает с новым
-            pinLiveData.insertPinCode(new PinHash().getHash(pinLiveData.getValue()));
-            return Constants.NAVIGATE;
-        } else if (pinLiveData.getHashPinCodeExist().equals("") &&
-                  !pinLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН НЕ совпадает с новым
-            return Constants.REPEAT_NEW_PIN_INCORRECT;
-        } else if (!pinLiveData.getHashPinCodeExist().equals("") &&
+        if (pinLiveData.getValue().length() == 4) {
+            if (newPin.equals("")) {    //Если первый ввод
+                newPin = pinLiveData.getValue();
+                return Constants.REPEAT_NEW_PIN;
+            } else if (pinLiveData.getHashPinCodeExist().equals("") &&
+                    pinLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН совпадает с новым
+                pinLiveData.insertPinCode(new PinHash().getHash(pinLiveData.getValue()));
+                return Constants.NAVIGATE;
+            } else if (pinLiveData.getHashPinCodeExist().equals("") &&
+                    !pinLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН НЕ совпадает с новым
+                return Constants.REPEAT_NEW_PIN_INCORRECT;
+            } else if (!pinLiveData.getHashPinCodeExist().equals("") &&
                     (new PinHash().getHash(pinLiveData.getValue())).equals(newPin)) { //Если не первый вход и совпадает с ПИНом из БД
-            return Constants.NAVIGATE;
-        } else { //Если не первый вход и НЕ совпадает с ПИНом из БД
-            return Constants.REPEAT_PIN_INCORRECT;
+                return Constants.NAVIGATE;
+            } else { //Если не первый вход и НЕ совпадает с ПИНом из БД
+                return Constants.REPEAT_PIN_INCORRECT;
+            }
+        } else  if (newPin.equals("") && pinLiveData.getValue().length() == 0) { //Если первый вход и ПИН не вводился (начальный запуск)
+            return Constants.NEW_PIN;
         }
+        return Constants.NO_ACTION;
     }
 }

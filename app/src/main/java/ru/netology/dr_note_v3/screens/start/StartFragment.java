@@ -54,9 +54,7 @@ public class StartFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 showPinView(s.length());
-                if (s.length() == 4) {
-                    behaviorView();
-                }
+                behaviorView();
             }
         });
 
@@ -132,6 +130,10 @@ public class StartFragment extends Fragment {
 
     private void behaviorView() {
         switch (sfViewModel.actionState()) {
+            case Constants.NEW_PIN:
+                new MessageDialog(getString(R.string.message_dialog_title_new_pin), getString(R.string.message_dialog_input_new_pin));
+//                resetPinView();
+                break;
             case Constants.REPEAT_NEW_PIN:
                 new MessageDialog(getString(R.string.message_dialog_title_new_pin), getString(R.string.message_dialog_new_pin));
                 resetPinView();
@@ -149,4 +151,5 @@ public class StartFragment extends Fragment {
                 break;
         }
     }
+
 }

@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import java.util.List;
 import ru.netology.dr_note_v3.R;
 import ru.netology.dr_note_v3.databinding.FragmentMainBinding;
@@ -24,6 +26,9 @@ public class MainFragment extends Fragment {
     private MainFragmentViewModel mfViewModel;
     private RecyclerView rvNoteItems;
     private NoteListAdapter adapter;
+
+    private long backPressedTime;
+    private Toast backToast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,9 +93,20 @@ public class MainFragment extends Fragment {
                 Constants.APP_ACTIVITY.navController.navigate(R.id.action_mainFragment_to_settingFragment);
                 break;
             case android.R.id.home:
-                Constants.APP_ACTIVITY.finish();
+//
+                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                    backToast.cancel();
+                    Constants.APP_ACTIVITY.finish();
+                } else {
+                    Toast.makeText(Constants.APP_ACTIVITY, "Нажмите еще раз чтобы выйти", Toast.LENGTH_SHORT);
+                    backToast.show();
+                }
+                backPressedTime = System.currentTimeMillis();
+//
+
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

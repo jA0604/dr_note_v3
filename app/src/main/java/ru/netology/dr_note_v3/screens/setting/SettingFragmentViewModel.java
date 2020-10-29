@@ -22,18 +22,25 @@ public class SettingFragmentViewModel extends ViewModel {
     }
 
     public void pinCodeBackspace() {
-        pinLiveData.setValue(pinLiveData.getValue().substring(0, pinLiveData.getValue().length() - 1));
+        if (pinLiveData.getValue().length() > 0 && pinLiveData.getValue().length() < 5) {
+            pinLiveData.setValue(pinLiveData.getValue().substring(0, pinLiveData.getValue().length() - 1));
+        }
     }
 
     public int actionState() {
-        if (newPin.equals("")) { //Если новый ПИН не был ранее введен
-            this.newPin = pinLiveData.getValue();
-            return Constants.REPEAT_NEW_PIN;
-        } else if (this.pinLiveData.getValue().equals(newPin)) { //Если повторный ПИН совпадает с новым
-            this.pinLiveData.updatePinCode(new PinHash().getHash(pinLiveData.getValue()));
-            return Constants.NAVIGATE;
-        } else { //Если повторный ПИН НЕ совпадает с новым
-            return Constants.REPEAT_NEW_PIN_INCORRECT;
+        if (pinLiveData.getValue().length() == 4) {
+            if (newPin.equals("")) { //Если новый ПИН не был ранее введен
+                this.newPin = pinLiveData.getValue();
+                return Constants.REPEAT_NEW_PIN;
+            } else if (this.pinLiveData.getValue().equals(newPin)) { //Если повторный ПИН совпадает с новым
+                this.pinLiveData.updatePinCode(new PinHash().getHash(pinLiveData.getValue()));
+                return Constants.NAVIGATE;
+            } else { //Если повторный ПИН НЕ совпадает с новым
+                return Constants.REPEAT_NEW_PIN_INCORRECT;
+            }
+        } else {
+            return Constants.NO_ACTION;
         }
+
     }
 }

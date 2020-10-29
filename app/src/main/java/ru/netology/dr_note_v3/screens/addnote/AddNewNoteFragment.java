@@ -13,11 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import ru.netology.dr_note_v3.R;
 import ru.netology.dr_note_v3.databinding.FragmentAddNewNoteBinding;
+import ru.netology.dr_note_v3.screens.dialog.MessageDialog;
 import ru.netology.dr_note_v3.utils.Constants;
 
 public class AddNewNoteFragment extends Fragment {
@@ -106,8 +109,13 @@ public class AddNewNoteFragment extends Fragment {
                 break;
             case R.id.icon_save:
                 saveInLiveData();
-                afViewModel.insertNote();
-                Constants.APP_ACTIVITY.navController.navigate(R.id.action_addNewNoteFragment_to_mainFragment);
+                if (afViewModel.insertNote()) {
+                    Constants.APP_ACTIVITY.navController.navigate(R.id.action_addNewNoteFragment_to_mainFragment);
+                    break;
+                } else {
+                    new MessageDialog(getString(R.string.message_dialog_title_all_fields_empty), getString(R.string.message_dialog_all_fields_empty));
+                }
+
                 break;
         }
         return super.onOptionsItemSelected(item);

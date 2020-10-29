@@ -6,6 +6,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import ru.netology.dr_note_v3.databinding.ActivityMainBinding;
 import ru.netology.dr_note_v3.utils.Constants;
@@ -13,6 +14,7 @@ import ru.netology.dr_note_v3.utils.Constants;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding maBinding;
     public NavController navController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +37,4 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         maBinding = null;
     }
-
 }

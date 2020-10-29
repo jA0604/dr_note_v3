@@ -15,10 +15,12 @@ public class AddNewNoteFragmentViewModel extends ViewModel {
         note.timestamp = calendar.getTimeInMillis();
         this.noteLiveData = new NoteLiveData(note);
     }
-    public void insertNote() {
+    public boolean insertNote() {
         if (!isEmpty()) {
             App.getInstance().getNoteDao().insert(noteLiveData.getValue());
+            return true;
         }
+        return false;
     }
 
     private boolean isEmpty() {

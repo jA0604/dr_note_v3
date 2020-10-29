@@ -14,6 +14,7 @@
     <string name="alert_dialog_str_btn_ok">Понятно</string>
     <string name="message_dialog_dismiss_pin">Неверный ПИН</string>
     <string name="message_dialog_new_pin">Введите ПИН еще раз</string>
+    <string name="message_dialog_input_new_pin">Введите 4-х значный ПИН, затем повторите ввод еще раз</string>
     <string name="message_dialog_title_new_pin">Ввод нового ПИН</string>
     <string name="message_dialog_new_pin_incorrect">Повторный ПИН не совпадает</string>
     <string name="message_dialog_title_pin">Ввод ПИН</string>
@@ -21,5 +22,9 @@
     <string name="check_box_has_deadline">Установить контрольную дату</string>
     <string name="str_btn_backspace">Del</string>
     <string name="str_btn_reset">Reset</string>
+    <string name="str_hint_name_note">Заголовок заметки</string>
+    <string name="str_hint_text_note">Текст заметки</string>
+    <string name="message_dialog_title_all_fields_empty">Пустые поля</string>
+    <string name="message_dialog_all_fields_empty">Все поля пустые. Заполните хотя бы одно поле</string>
 
 </resources>

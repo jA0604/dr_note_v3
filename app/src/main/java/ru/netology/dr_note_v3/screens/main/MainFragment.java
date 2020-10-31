@@ -1,7 +1,9 @@
 package ru.netology.dr_note_v3.screens.main;
 
 import android.os.Bundle;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import java.util.List;
 import ru.netology.dr_note_v3.R;
 import ru.netology.dr_note_v3.databinding.FragmentMainBinding;
@@ -27,8 +28,29 @@ public class MainFragment extends Fragment {
     private RecyclerView rvNoteItems;
     private NoteListAdapter adapter;
 
-    private long backPressedTime;
+    private OnBackPressedCallback callbackOnBackPressed;
+    private long backPressedTime = 0L;
     private Toast backToast;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        callbackOnBackPressed = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                    backToast.cancel();
+                    Constants.APP_ACTIVITY.finish();
+                } else {
+                    backToast = Toast.makeText(Constants.APP_ACTIVITY, "Нажмите еще раз, чтобы выйти", Toast.LENGTH_SHORT);
+                    backToast.show();
+                }
+                backPressedTime = System.currentTimeMillis();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callbackOnBackPressed);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,9 +69,6 @@ public class MainFragment extends Fragment {
         super.onStart();
 
         setHasOptionsMenu(true);
-        Constants.APP_ACTIVITY.getSupportActionBar().setHomeButtonEnabled(true);
-        Constants.APP_ACTIVITY.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         initialithation();
     }
 

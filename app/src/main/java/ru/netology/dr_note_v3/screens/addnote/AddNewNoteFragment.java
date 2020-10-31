@@ -54,33 +54,41 @@ public class AddNewNoteFragment extends Fragment {
         afBinding.tvDeadline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(afViewModel.getNoteLiveData().getValue().timestamp);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(Constants.APP_ACTIVITY,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                                afBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + i2 + "-" + (i1 +1) + "-" + i);
-
-                                Calendar calendarTimestamp = Calendar.getInstance();
-                                calendarTimestamp.set(i, i1, i2);
-                                afViewModel.getNoteLiveData().getValue().timestamp = calendarTimestamp.getTimeInMillis();
-
-                            }
-                        },  calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.show();
+                callDataPicker();
             }
         });
 
         afBinding.cbHasdeadline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) afBinding.tvDeadline.setVisibility(View.VISIBLE);
-                else afBinding.tvDeadline.setVisibility(View.GONE);
+                if (b) {
+                    afBinding.tvDeadline.setVisibility(View.VISIBLE);
+                    callDataPicker();
+                } else {
+                    afBinding.tvDeadline.setVisibility(View.GONE);
+                }
                 afViewModel.getNoteLiveData().getValue().hasDeadline = b;
             }
         });
 
+    }
+
+    private void callDataPicker() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(afViewModel.getNoteLiveData().getValue().timestamp);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Constants.APP_ACTIVITY,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        afBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + i2 + "-" + (i1 +1) + "-" + i);
+
+                        Calendar calendarTimestamp = Calendar.getInstance();
+                        calendarTimestamp.set(i, i1, i2);
+                        afViewModel.getNoteLiveData().getValue().timestamp = calendarTimestamp.getTimeInMillis();
+
+                    }
+                },  calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 
     private void saveInLiveData() {

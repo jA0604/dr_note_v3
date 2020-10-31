@@ -17,7 +17,8 @@ public class EditNoteFragmentViewModel extends ViewModel {
     }
 
     public void setNoteLiveData(Note note) {
-        noteLiveData.setNoteLiveDataValue(note);
+        Note noteNew = App.getInstance().getNoteDao().findById(note.id);
+        noteLiveData.setNoteLiveDataValue(noteNew);
     }
 
     public void deleteNote() {

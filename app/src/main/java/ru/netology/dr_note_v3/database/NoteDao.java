@@ -20,6 +20,9 @@ public interface NoteDao {
     @Query("SELECT * FROM note_table")
     LiveData<List<Note>> getAllLiveData();
 
+    @Query("SELECT * FROM note_table WHERE id = :id LIMIT 1")
+    Note findById(int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Note note);
 

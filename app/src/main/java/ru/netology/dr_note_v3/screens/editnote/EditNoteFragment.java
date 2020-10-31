@@ -58,6 +58,7 @@ public class EditNoteFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 tvDeadLineVisibility(b);
+                if  (b)  callDataPicker();
                 efViewModel.getNoteLiveData().getValue().hasDeadline = b;
             }
         });
@@ -79,25 +80,29 @@ public class EditNoteFragment extends Fragment {
                         Constants.APP_ACTIVITY.navController.navigate(R.id.action_editNoteFragment_to_mainFragment);
                         break;
                     case R.id.tv_deadline:
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTimeInMillis(efViewModel.getNoteLiveData().getValue().timestamp);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(Constants.APP_ACTIVITY,
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @Override
-                                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                                        efBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + i2 + "-" + (i1 +1) + "-" + i);
-
-                                        Calendar calendarTimestamp = Calendar.getInstance();
-                                        calendarTimestamp.set(i, i1, i2);
-                                        long l = calendarTimestamp.getTimeInMillis();
-                                        efViewModel.getNoteLiveData().getValue().timestamp = calendarTimestamp.getTimeInMillis();
-                                    }
-                                },  calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                        datePickerDialog.show();
+                        callDataPicker();
                         break;
                 }
             }
         });
+    }
+
+    private void callDataPicker() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(efViewModel.getNoteLiveData().getValue().timestamp);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Constants.APP_ACTIVITY,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        efBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + i2 + "-" + (i1 +1) + "-" + i);
+
+                        Calendar calendarTimestamp = Calendar.getInstance();
+                        calendarTimestamp.set(i, i1, i2);
+                        long l = calendarTimestamp.getTimeInMillis();
+                        efViewModel.getNoteLiveData().getValue().timestamp = calendarTimestamp.getTimeInMillis();
+                    }
+                },  calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 
 

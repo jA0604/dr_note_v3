@@ -111,19 +111,9 @@ public class MainFragment extends Fragment {
             case R.id.btn_settings:
                 Constants.APP_ACTIVITY.navController.navigate(R.id.action_mainFragment_to_settingFragment);
                 break;
-            case android.R.id.home:
-//
-                if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                    backToast.cancel();
-                    Constants.APP_ACTIVITY.finish();
-                } else {
-                    Toast.makeText(Constants.APP_ACTIVITY, "Нажмите еще раз чтобы выйти", Toast.LENGTH_SHORT);
-                    backToast.show();
-                }
-                backPressedTime = System.currentTimeMillis();
-//
-
-                break;
+//            case android.R.id.home:
+//                Constants.APP_ACTIVITY.finish();
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,28 +1,31 @@
 package ru.netology.dr_note_v3.screens.editnote;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import ru.netology.dr_note_v3.app.App;
 import ru.netology.dr_note_v3.model.Note;
-import ru.netology.dr_note_v3.utils.NoteLiveData;
 
 public class EditNoteFragmentViewModel extends ViewModel {
-    private NoteLiveData noteLiveData = new NoteLiveData();
+    private MutableLiveData<Note> noteMutableLiveData = new MutableLiveData<>();
+    public LiveData<Note> noteLiveData = noteMutableLiveData;
+    private boolean firsStart = true;
+
 
     public void updateNote() {
-        App.getInstance().getNoteDao().update(noteLiveData.getValue());
-    }
-
-    public NoteLiveData getNoteLiveData() {
-        return this.noteLiveData;
+        App.getInstance().getNoteDao().update(noteMutableLiveData.getValue());
     }
 
     public void setNoteLiveData(Note note) {
-        Note noteNew = App.getInstance().getNoteDao().findById(note.id);
-        noteLiveData.setNoteLiveDataValue(noteNew);
+        if (firsStart) {
+            Note noteNew = App.getInstance().getNoteDao().findById(note.id);
+            noteMutableLiveData.setValue(noteNew);
+            firsStart = false;
+        }
     }
 
     public void deleteNote() {
-        App.getInstance().getNoteDao().delete(noteLiveData.getValue());
+        App.getInstance().getNoteDao().delete(noteMutableLiveData.getValue());
     }
 
 }

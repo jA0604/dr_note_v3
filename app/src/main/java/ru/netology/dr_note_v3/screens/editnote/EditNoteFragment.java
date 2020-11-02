@@ -59,7 +59,7 @@ public class EditNoteFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 tvDeadLineVisibility(b);
                 if  (b)  callDataPicker();
-                efViewModel.getNoteLiveData().getValue().hasDeadline = b;
+                efViewModel.noteLiveData.getValue().hasDeadline = b;
             }
         });
     }
@@ -89,7 +89,7 @@ public class EditNoteFragment extends Fragment {
 
     private void callDataPicker() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(efViewModel.getNoteLiveData().getValue().timestamp);
+        calendar.setTimeInMillis(efViewModel.noteLiveData.getValue().timestamp);
         DatePickerDialog datePickerDialog = new DatePickerDialog(Constants.APP_ACTIVITY,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -99,7 +99,7 @@ public class EditNoteFragment extends Fragment {
                         Calendar calendarTimestamp = Calendar.getInstance();
                         calendarTimestamp.set(i, i1, i2);
                         long l = calendarTimestamp.getTimeInMillis();
-                        efViewModel.getNoteLiveData().getValue().timestamp = calendarTimestamp.getTimeInMillis();
+                        efViewModel.noteLiveData.getValue().timestamp = calendarTimestamp.getTimeInMillis();
                     }
                 },  calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -107,17 +107,17 @@ public class EditNoteFragment extends Fragment {
 
 
     private void saveInLiveData() {
-        efViewModel.getNoteLiveData().getValue().name = efBinding.etInputNameNote.getText().toString();
-        efViewModel.getNoteLiveData().getValue().text = efBinding.etInputTextNote.getText().toString();
+        efViewModel.noteLiveData.getValue().name = efBinding.etInputNameNote.getText().toString();
+        efViewModel.noteLiveData.getValue().text = efBinding.etInputTextNote.getText().toString();
     }
 
     private void bind() {
-        efBinding.etInputNameNote.setText(efViewModel.getNoteLiveData().getValue().name);
-        efBinding.etInputTextNote.setText(efViewModel.getNoteLiveData().getValue().text);
-        efBinding.cbHasdeadline.setChecked(efViewModel.getNoteLiveData().getValue().hasDeadline);
+        efBinding.etInputNameNote.setText(efViewModel.noteLiveData.getValue().name);
+        efBinding.etInputTextNote.setText(efViewModel.noteLiveData.getValue().text);
+        efBinding.cbHasdeadline.setChecked(efViewModel.noteLiveData.getValue().hasDeadline);
         tvDeadLineVisibility(efBinding.cbHasdeadline.isChecked());
-        SimpleDateFormat formating = new SimpleDateFormat("dd.MM.YYYY HH:mm:ss:SSS", Locale.getDefault());
-        efBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + formating.format(efViewModel.getNoteLiveData().getValue().timestamp));
+        SimpleDateFormat formating = new SimpleDateFormat("dd.MM.YYYY HH:mm", Locale.getDefault());
+        efBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + formating.format(efViewModel.noteLiveData.getValue().timestamp));
     }
 
 

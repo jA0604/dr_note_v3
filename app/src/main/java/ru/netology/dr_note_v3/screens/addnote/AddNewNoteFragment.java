@@ -67,7 +67,7 @@ public class AddNewNoteFragment extends Fragment {
                 } else {
                     afBinding.tvDeadline.setVisibility(View.GONE);
                 }
-                afViewModel.getNoteLiveData().getValue().hasDeadline = b;
+                afViewModel.noteLiveData.getValue().hasDeadline = b;
             }
         });
 
@@ -75,7 +75,7 @@ public class AddNewNoteFragment extends Fragment {
 
     private void callDataPicker() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(afViewModel.getNoteLiveData().getValue().timestamp);
+        calendar.setTimeInMillis(afViewModel.noteLiveData.getValue().timestamp);
         DatePickerDialog datePickerDialog = new DatePickerDialog(Constants.APP_ACTIVITY,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -84,7 +84,7 @@ public class AddNewNoteFragment extends Fragment {
 
                         Calendar calendarTimestamp = Calendar.getInstance();
                         calendarTimestamp.set(i, i1, i2);
-                        afViewModel.getNoteLiveData().getValue().timestamp = calendarTimestamp.getTimeInMillis();
+                        afViewModel.noteLiveData.getValue().timestamp = calendarTimestamp.getTimeInMillis();
 
                     }
                 },  calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -92,16 +92,16 @@ public class AddNewNoteFragment extends Fragment {
     }
 
     private void saveInLiveData() {
-        afViewModel.getNoteLiveData().getValue().name = afBinding.etInputNameNote.getText().toString();
-        afViewModel.getNoteLiveData().getValue().text = afBinding.etInputTextNote.getText().toString();
+        afViewModel.noteLiveData.getValue().name = afBinding.etInputNameNote.getText().toString();
+        afViewModel.noteLiveData.getValue().text = afBinding.etInputTextNote.getText().toString();
     }
 
     private void bind() {
-        afBinding.etInputNameNote.setText(afViewModel.getNoteLiveData().getValue().name);
-        afBinding.etInputTextNote.setText(afViewModel.getNoteLiveData().getValue().text);
-        afBinding.cbHasdeadline.setChecked(afViewModel.getNoteLiveData().getValue().hasDeadline);
-        SimpleDateFormat formating = new SimpleDateFormat("dd.MM.YYYY HH:mm:ss:SSS", Locale.getDefault());
-        afBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + formating.format(afViewModel.getNoteLiveData().getValue().timestamp));
+        afBinding.etInputNameNote.setText(afViewModel.noteLiveData.getValue().name);
+        afBinding.etInputTextNote.setText(afViewModel.noteLiveData.getValue().text);
+        afBinding.cbHasdeadline.setChecked(afViewModel.noteLiveData.getValue().hasDeadline);
+        SimpleDateFormat formating = new SimpleDateFormat("dd.MM.YYYY HH:mm", Locale.getDefault());
+        afBinding.tvDeadline.setText(getString(R.string.str_tv_calendar) + formating.format(afViewModel.noteLiveData.getValue().timestamp));
     }
 
     @Override

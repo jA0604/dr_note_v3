@@ -1,54 +1,73 @@
 package ru.netology.dr_note_v3.screens.start;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.List;
+
+import ru.netology.dr_note_v3.app.App;
+import ru.netology.dr_note_v3.model.PinCode;
 import ru.netology.dr_note_v3.utils.Constants;
 import ru.netology.dr_note_v3.utils.PinHash;
-import ru.netology.dr_note_v3.utils.PinLiveData;
 
 public class StartFragmentViewModel extends ViewModel {
-    private PinLiveData pinLiveData;
     private String newPin = "";
+    private List<PinCode> listPinCode = App.getInstance().getPinCodeDao().getAll();
+    private MutableLiveData<String> pinCodeMutableLiveData = new MutableLiveData<>("");
+    public LiveData<String> pinCodeLiveData = pinCodeMutableLiveData;
+
 
     public StartFragmentViewModel() {
-        this.pinLiveData = new PinLiveData("");
-        this.newPin = pinLiveData.getHashPinCodeExist();
-    }
-
-    public PinLiveData getPinLiveData() {
-        return this.pinLiveData;
+        newPin = getHashPinCodeExist();
     }
 
     public void setPin(String pin) {
-        this.pinLiveData.setValue(this.pinLiveData.getValue() + pin);
+        pinCodeMutableLiveData.setValue(pinCodeMutableLiveData.getValue() + pin);
     }
 
     public void pinCodeBackspace() {
-        if (pinLiveData.getValue().length() > 0 && pinLiveData.getValue().length() < 5) {
-            pinLiveData.setValue(pinLiveData.getValue().substring(0, pinLiveData.getValue().length() - 1));
+        if (pinCodeMutableLiveData.getValue().length() > 0 && pinCodeMutableLiveData.getValue().length() < 5) {
+            pinCodeMutableLiveData.setValue(pinCodeMutableLiveData.getValue().substring(0, pinCodeMutableLiveData.getValue().length() - 1));
         }
+    }
+    public void resetPinCode() {
+        pinCodeMutableLiveData.setValue("");
     }
 
     public int actionState() {
-        if (pinLiveData.getValue().length() == 4) {
+        if (pinCodeMutableLiveData.getValue().length() == 4) {
             if (newPin.equals("")) {    //Если первый ввод
-                newPin = pinLiveData.getValue();
+                newPin = pinCodeMutableLiveData.getValue();
                 return Constants.REPEAT_NEW_PIN;
-            } else if (pinLiveData.getHashPinCodeExist().equals("") &&
-                    pinLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН совпадает с новым
-                pinLiveData.insertPinCode(new PinHash().getHash(pinLiveData.getValue()));
+            } else if (getHashPinCodeExist().equals("") &&
+                    pinCodeMutableLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН совпадает с новым
+                    insertPinCode(new PinHash().getHash(pinCodeMutableLiveData.getValue()));
                 return Constants.NAVIGATE;
-            } else if (pinLiveData.getHashPinCodeExist().equals("") &&
-                    !pinLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН НЕ совпадает с новым
+            } else if (getHashPinCodeExist().equals("") &&
+                    !pinCodeMutableLiveData.getValue().equals(newPin)) { //Если первый вход и повторный ПИН НЕ совпадает с новым
                 return Constants.REPEAT_NEW_PIN_INCORRECT;
-            } else if (!pinLiveData.getHashPinCodeExist().equals("") &&
-                    (new PinHash().getHash(pinLiveData.getValue())).equals(newPin)) { //Если не первый вход и совпадает с ПИНом из БД
+            } else if (!getHashPinCodeExist().equals("") &&
+                    (new PinHash().getHash(pinCodeMutableLiveData.getValue())).equals(newPin)) { //Если не первый вход и совпадает с ПИНом из БД
                 return Constants.NAVIGATE;
             } else { //Если не первый вход и НЕ совпадает с ПИНом из БД
                 return Constants.REPEAT_PIN_INCORRECT;
             }
-        } else  if (newPin.equals("") && pinLiveData.getValue().length() == 0) { //Если первый вход и ПИН не вводился (начальный запуск)
+        } else  if (newPin.equals("") && pinCodeMutableLiveData.getValue().length() == 0) { //Если первый вход и ПИН не вводился (начальный запуск)
             return Constants.NEW_PIN;
         }
         return Constants.NO_ACTION;
     }
+
+    private String getHashPinCodeExist() {
+        if (listPinCode.size() == 0) {
+            return "";
+        } else {
+            return listPinCode.get(0).getPinHash();
+        }
+    }
+    private void insertPinCode(String hashPinCode) {
+        App.getInstance().getPinCodeDao().insert(new PinCode(hashPinCode));
+    }
+
 }

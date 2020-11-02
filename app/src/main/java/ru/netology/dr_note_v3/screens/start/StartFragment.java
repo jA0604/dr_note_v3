@@ -50,14 +50,13 @@ public class StartFragment extends Fragment {
         clickButton(sfBinding.btnReset);
 
         sfViewModel = new ViewModelProvider(this).get(StartFragmentViewModel.class);
-        sfViewModel.getPinLiveData().observe(this, new Observer<String>() {
+        sfViewModel.pinCodeLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 showPinView(s.length());
                 behaviorView();
             }
         });
-
     }
 
     private void clickButton(View viewButton) {
@@ -80,7 +79,7 @@ public class StartFragment extends Fragment {
     }
 
     private void backSpace() {
-        switch (sfViewModel.getPinLiveData().getValue().length()) {
+        switch (sfViewModel.pinCodeLiveData.getValue().length()) {
             case 1:
                 sfBinding.tvPin1.setBackgroundResource(R.drawable.drw_ring);
                 break;
@@ -124,7 +123,7 @@ public class StartFragment extends Fragment {
     }
 
     private void resetPinView() {
-        sfViewModel.getPinLiveData().setValue("");
+        sfViewModel.resetPinCode();
         showPinView(0);
     }
 
@@ -132,7 +131,6 @@ public class StartFragment extends Fragment {
         switch (sfViewModel.actionState()) {
             case Constants.NEW_PIN:
                 new MessageDialog(getString(R.string.message_dialog_title_new_pin), getString(R.string.message_dialog_input_new_pin));
-//                resetPinView();
                 break;
             case Constants.REPEAT_NEW_PIN:
                 new MessageDialog(getString(R.string.message_dialog_title_new_pin), getString(R.string.message_dialog_new_pin));

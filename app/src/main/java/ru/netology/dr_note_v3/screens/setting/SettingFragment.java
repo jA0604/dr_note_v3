@@ -56,7 +56,7 @@ public class SettingFragment extends Fragment {
         clickButton(sfBinding.btnReset);
 
         sfViewModel = new ViewModelProvider(this).get(SettingFragmentViewModel.class);
-        sfViewModel.getPinLiveData().observe(this, new Observer<String>() {
+        sfViewModel.pinCodeLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 showPinView(s.length());
@@ -115,12 +115,12 @@ public class SettingFragment extends Fragment {
     }
 
     private void resetPinView() {
-        sfViewModel.getPinLiveData().setValue("");
+        sfViewModel.resetPinCode();
         showPinView(0);
     }
 
     private void backSpace() {
-        switch (sfViewModel.getPinLiveData().getValue().length()) {
+        switch (sfViewModel.pinCodeLiveData.getValue().length()) {
             case 1:
                 sfBinding.tvPin1.setBackgroundResource(R.drawable.drw_ring);
                 break;

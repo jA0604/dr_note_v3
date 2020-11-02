@@ -36,7 +36,9 @@
         tools:layout="@layout/fragment_add_new_note" >
         <action
             android:id="@+id/action_addNewNoteFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navi_graph" />
     </fragment>
     <fragment
         android:id="@+id/editNoteFragment"
@@ -45,7 +47,9 @@
         tools:layout="@layout/fragment_edit_note" >
         <action
             android:id="@+id/action_editNoteFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navi_graph" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -54,6 +58,8 @@
         tools:layout="@layout/fragment_setting" >
         <action
             android:id="@+id/action_settingFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navi_graph" />
     </fragment>
 </navigation>
